@@ -72,6 +72,13 @@ class ProxyPool {
 }
 const createPoolProxy = (limit = 10, gap = 0) => {
   const pool = new ProxyPool(limit, gap);
-  return pool.addMethod;
+  return {
+    addMethod: pool.addMethod,
+    setLimit: (limit) => (pool.limit = limit),
+    getLimit: () => pool.limit,
+    setGap: (gap) => (pool.gap = gap),
+    getGap: () => pool.gap,
+    getSize: () => pool.size,
+  };
 };
 module.exports = createPoolProxy;
