@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>command undo</title>
+    <style>
+        #ball {
+            background-color: red;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .wall{
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div id="ball"></div>
+    <div class='wall'></div>
+    <input type="number" id="pos" value="500">
+    <br>
+    <button id="start">start</button>
+    <button id="undo">undo</button>
+    <script src="./tween.js"></script>
+    <script src="./Animate.js"></script>
+    <script src="3.js"></script>
+    <script src="4.js"></script>
+</body>
+</html>
