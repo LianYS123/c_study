@@ -10,18 +10,18 @@ const writeFile = (stream, pathname) => {
     ws.on('close', () => {
       resolve(pathname);
     });
-    ws.on('error', (err) => {
+    ws.on('error', err => {
       reject(err);
     });
   });
 };
-const get = (src) => {
+const get = (src, opts = {}) => {
   const method = src.startsWith('https') ? https : http;
   return new Promise((resolve, reject) => {
-    method.get(src, resolve).on('error', reject);
+    method.get(src, { ...opts }, resolve).on('error', reject);
   });
 };
-const getExtname = (src) => {
+const getExtname = src => {
   let extname = path.extname(src);
   extname =
     extname.indexOf('?') === -1
@@ -29,15 +29,15 @@ const getExtname = (src) => {
       : extname.substring(0, extname.lastIndexOf('?'));
   return extname;
 };
-const fetchFile = async (src, filename) => {
+const fetchFile = async (src, { filename, agent } = {}) => {
   const extname = getExtname(src);
-  const res = await get(src);
+  const basename = path.basename(src);
+  const res = await get(src, { agent });
   if (res.statusCode === 303 || res.statusCode === 302) {
-    console.log('redirect to:' + res.headers.location);
     return fetchFile(res.headers.location, filename);
   }
   assert(res.statusCode < 300, 'statusCode: ' + res.statusCode);
-  const result = await writeFile(res, filename + extname);
-  return result
+  const result = await writeFile(res, filename || basename + extname);
+  return result;
 };
 module.exports = fetchFile;

@@ -38,7 +38,7 @@ const sort = (arr, sorter) => {
 };
 // const arr = [1, 2, 3];
 
-const arr = [7, 9, 3, 5, 8, 2, 0, 5, 7, 5, 5, 6, 4];
+const arr = [7, 9, 3, 5, 8, 2, 5, 7, -1, 5, 5, 6, 4];
 
 // forEach(arr, console.log);
 // console.log(map(arr, item => item * item));
@@ -77,25 +77,25 @@ const partition = (arr, flag, start, end) => {
   }
   return [less, more];
 };
-
-const quickSort = (arr, start = 0, end = arr.length - 1) => {
-  const [less, more] = partition(arr, arr[start], start, end);
-
-  if (less < more) {
-    if (less > start) {
-      quickSort(arr, start, less);
-    }
-    if (more < end) {
-      quickSort(arr, more, end);
-    }
+const quickSort = arr => {
+  const stack = [[0, arr.length - 1]];
+  let start, end, less, more;
+  while (stack.length) {
+    [start, end] = stack.pop();
+    if (start >= end) continue;
+    [less, more] = partition(arr, arr[start], start, end);
+    stack.push([start, less], [more, end]);
   }
   return arr;
+};
+const _quickSort = arr => {
+  return quickSort([...arr]);
 };
 const merge = (arr1, arr2) => {
   const result = [];
   let i, j;
-  for(i = 0, j = 0; arr1[i] && arr2[j];){
-    if(arr1[i] <= arr2[j]){
+  for (i = 0, j = 0; arr1[i] !== undefined && arr2[j] !== undefined; ) {
+    if (arr1[i] <= arr2[j]) {
       result.push(arr1[i]);
       i++;
     } else {
@@ -103,32 +103,45 @@ const merge = (arr1, arr2) => {
       j++;
     }
   }
-  while(arr1[i]){
+  while (arr1[i]) {
     result.push(arr1[i]);
     i++;
   }
-  while(arr2[j]){
+  while (arr2[j]) {
     result.push(arr2[j]);
     j++;
   }
   return result;
-}
+};
 
 let x = 0;
 const mergeSort = (arr, l = 0, r = arr.length - 1) => {
-  if(l > r){
+  if (l > r) {
     throw `l = ${l} r = ${r} error`;
   }
-  if(l === r) {
-    return [arr[l]]
+  if (l === r) {
+    return [arr[l]];
   }
-  console.log(++x, l, r); 
+  // console.log(++x, l, r);
   const m = (l + r) >> 1;
   const arr1 = mergeSort(arr, l, m);
   const arr2 = mergeSort(arr, m + 1, r);
   return merge(arr1, arr2);
 };
 
+const insertSort = arr => {
+  for (let i = 1; i < arr.length; i++) {
+    let j = i;
+    while (j > 0) {
+      if (arr[j] > arr[j - 1]) {
+        break;
+      }
+      swap(arr, j, --j);
+    }
+  }
+  return arr;
+};
+const _insertSort = arr => insertSort([...arr]);
 // console.log(partition(arr, arr[0], 0, arr.length - 1));
 // console.log(arr);
 
@@ -143,6 +156,38 @@ const mergeSort = (arr, l = 0, r = arr.length - 1) => {
 //     }
 //   }
 // };
-
+const createArr = size => {
+  const arr = [];
+  for (let i = 0; i < size; i++) {
+    arr.push(parseInt(Math.random() * 10000));
+  }
+  return arr;
+};
+const calcTime = (fn, ...args) => {
+  const t1 = Date.now();
+  const res = fn(...args);
+  const t2 = Date.now();
+  console.log(t2 - t1);
+  return [t2 - t1, res];
+};
+const isEqual = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  for (let i = 0, len = arr1.length; i < len; i++) {
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+  return true;
+};
 // console.log(quickSort(arr));
-console.log(mergeSort(arr));
+// console.log(mergeSort(arr));
+const bigarr = createArr(4000000);
+
+// const [it, ir] = calcTime(_insertSort, bigarr);
+const [mt, mr] = calcTime(mergeSort, bigarr);
+const [qt, qr] = calcTime(_quickSort, bigarr);
+// console.log(isEqual(ir, mr))
+console.log(isEqual(qr, mr))
+// console.log([it, qt, mt])

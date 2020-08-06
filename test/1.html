@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>blob test</title>
+</head>
+<body>
+    
+    <script>
+        const $ = document.querySelector.bind(document);
+        const $$ = document.querySelectorAll.bind(document);
+        const src = 'http://lys.buctsnc.cn/imgs/e374eaff1c554c1eb954d990a3e8d926.jpg';
+        const fetchData = async src => {
+            const blob = await fetch(src).then(res => res.blob())
+            const url = URL.createObjectURL(blob);
+            return url;
+        }
+        const fetchImage = async src => {
+            const url = await fetchData(src)
+            const img = new Image(100);
+            img.src = url; 
+            return img;
+        }
+        fetchImage(src).then(img => {
+            $('body').appendChild(img);
+        })
+
+
+    </script>
+</body>
+</html>
