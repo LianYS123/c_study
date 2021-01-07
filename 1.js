@@ -114,7 +114,6 @@ const merge = (arr1, arr2) => {
   return result;
 };
 
-let x = 0;
 const mergeSort = (arr, l = 0, r = arr.length - 1) => {
   if (l > r) {
     throw `l = ${l} r = ${r} error`;
@@ -122,7 +121,6 @@ const mergeSort = (arr, l = 0, r = arr.length - 1) => {
   if (l === r) {
     return [arr[l]];
   }
-  // console.log(++x, l, r);
   const m = (l + r) >> 1;
   const arr1 = mergeSort(arr, l, m);
   const arr2 = mergeSort(arr, m + 1, r);
@@ -186,8 +184,9 @@ const isEqual = (arr1, arr2) => {
 const bigarr = createArr(4000000);
 
 // const [it, ir] = calcTime(_insertSort, bigarr);
-const [mt, mr] = calcTime(mergeSort, bigarr);
+// const [mt, mr] = calcTime(mergeSort, bigarr);
 const [qt, qr] = calcTime(_quickSort, bigarr);
+// console.log(qt);
 // console.log(isEqual(ir, mr))
-console.log(isEqual(qr, mr))
+// console.log(isEqual(qr, mr))
 // console.log([it, qt, mt])

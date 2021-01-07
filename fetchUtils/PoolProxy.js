@@ -1,5 +1,5 @@
 const { delay } = require('./utils');
-class ProxyPool {
+class Pool {
   cache = [];
   flag = false;
   size = 0;
@@ -7,7 +7,7 @@ class ProxyPool {
     this.limit = limit;
     this.gap = gap;
   }
-  setSize = (size) => {
+  setSize = size => {
     if (size <= this.size) {
       this.size = size;
       this.onSizeDecrease();
@@ -49,7 +49,7 @@ class ProxyPool {
       this.delayStart();
     }
   };
-  addMethod = (fn) => (...args) => {
+  addMethod = fn => (...args) => {
     return new Promise((resolve, reject) => {
       this.cache.push({
         fn,
@@ -70,15 +70,17 @@ class ProxyPool {
     });
   };
 }
-const createPoolProxy = (limit = 10, gap = 0) => {
-  const pool = new ProxyPool(limit, gap);
-  return {
-    addMethod: pool.addMethod,
-    setLimit: (limit) => (pool.limit = limit),
-    getLimit: () => pool.limit,
-    setGap: (gap) => (pool.gap = gap),
-    getGap: () => pool.gap,
-    getSize: () => pool.size,
-  };
-};
-module.exports = createPoolProxy;
+class ProxyPool {
+  pool = new Pool();
+  constructor(limit = 10, gap) {
+    this.pool.limit = limit;
+    this.pool.gap = gap;
+  }
+  addMethod = this.pool.addMethod;
+  setLimit = limit => (pool.limit = limit);
+  getLimit = () => pool.limit;
+  setGap = gap => (pool.gap = gap);
+  getGap = () => pool.gap;
+  getSize = () => pool.size;
+}
+module.exports = ProxyPool;

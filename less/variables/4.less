@@ -1,0 +1,51 @@
+.button {
+
+  & .text { // 相当于直接写.text
+    color: red;
+  }
+
+  &-ok {
+    color: #000;
+  }
+  &-cancel {
+    color: #ccc;
+  }
+
+  & + & {
+    color: #ccc;
+  }
+  & & {
+    color: #ccc;
+  }
+  &,
+  &-custom {
+    color: #ccc;
+  }
+}
+
+// Note that & represents all parent selectors (not just the nearest ancestor)
+.outer {
+  .inner {
+    & text {
+      background-color: #fff;
+    }
+  }
+}
+
+//Changing Selector Order
+.header {
+  .menu {
+    border-radius: 5px;
+    .no-borderradius & {
+      background-image: url('images/button-background.png');
+    }
+  }
+}
+
+// generate possiables
+p, a, ul, li {
+    margin: 0;
+    & + & {
+        padding: 0;
+    }
+}

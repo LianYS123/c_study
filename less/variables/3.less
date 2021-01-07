@@ -1,0 +1,15 @@
+//Properties as Variables
+
+.box {
+  color: red;
+  background-color: $color; //$prop语法使用属性变量
+}
+
+.box2 {
+  color: red;
+  background-color: $color; //会选择最后一个值作为最终的值
+  .inner {
+    background-color: $color; //会选择最后一个值作为最终的值
+  }
+  color: blue;
+}

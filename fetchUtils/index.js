@@ -1,5 +1,5 @@
-const createPoolProxy = require('./createPoolProxy');
-const { addMethod } = createPoolProxy();
+const PoolProxy = require('./PoolProxy');
+const poolProxy = new PoolProxy();
 const { delay, calcTime } = require('./utils');
 const _delayMessage = async (message) => {
   await delay(2000 * Math.random());
@@ -8,8 +8,8 @@ const _delayMessage = async (message) => {
   }
   return message;
 };
-const delayMessage = addMethod(_delayMessage);
-const delayMessage2 = createPoolProxy()(_delayMessage);
+const delayMessage = poolProxy.addMethod(_delayMessage);
+const delayMessage2 = (new PoolProxy).addMethod(_delayMessage);
 const testFn = async () => {
   const arr = [];
   for (let i = 0; i < 100; i++) {

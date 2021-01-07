@@ -1,0 +1,16 @@
+
+@selector: banner;
+@primary: red;
+@url: '../img';
+@themes: './1.less';
+@poperty: color;
+
+.@{selector} {
+    border-color: @@color; //color可以再之后声明
+    @color: primary; //注意，这里primary没@，不是变量引用，是单纯的变量值
+    @{poperty}: '#ccc';
+    background-@{poperty}: #fff;
+    background-image: url('@{url}/logo.jpg'); //这里的引号是必须的
+}
+
+@import '@{themes}'; //编译的时候路径不存在会报错。
